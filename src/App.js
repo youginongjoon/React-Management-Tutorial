@@ -1,6 +1,12 @@
-import React, { Component } from "react";
+import React from "react";
 import "./App.css";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
 import Customer from "./components/Customer";
+import Paper from "@mui/material/Paper";
 
 const customers = [
   {
@@ -29,12 +35,22 @@ const customers = [
   },
 ];
 
-class App extends Component {
-  render() {
-    return (
-      <>
-        {customers.map((c) => {
-          return (
+function App() {
+  return (
+    <Paper className="root">
+      <Table className="table">
+        <TableHead>
+          <TableRow>
+            <TableCell>번호</TableCell>
+            <TableCell>이미지</TableCell>
+            <TableCell>이름</TableCell>
+            <TableCell>생년월일</TableCell>
+            <TableCell>성별</TableCell>
+            <TableCell>직업</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {customers.map((c) => (
             <Customer
               key={c.id}
               id={c.id}
@@ -44,11 +60,11 @@ class App extends Component {
               gender={c.gender}
               job={c.job}
             />
-          );
-        })}
-      </>
-    );
-  }
+          ))}
+        </TableBody>
+      </Table>
+    </Paper>
+  );
 }
 
 export default App;

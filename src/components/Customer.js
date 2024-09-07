@@ -1,39 +1,18 @@
 import React from "react";
+import TableCell from '@mui/material/TableCell';
+import TableRow from '@mui/material/TableRow';
 
-class Customer extends React.Component {
-  render() {
-    return (
-      <div>
-        <CustomerProfile id={this.props.id} image={this.props.image} name={this.props.name}/>
-        <CustomerInfo birthday={this.props.birthday} gender={this.props.gender} job={this.props.job}/>
-      </div>
-    );
-  }
-}
-
-
-class CustomerProfile extends React.Component {
-  render() {
-    return (
-      <div>
-        <img src={this.props.image} alt="profile"/>
-        <h2>{this.props.name}({this.props.id})</h2>
-      </div>
-    )
-  }
-}
-
-
-class CustomerInfo extends React.Component {
-  render() {
-    return (
-      <div>
-        <p>{this.props.birthday}</p>
-        <p>{this.props.gender}</p>
-        <p>{this.props.job}</p>
-      </div>
-    )
-  }
+function Customer({ id, image, name, birthday, gender, job }) {
+  return (
+    <TableRow>
+      <TableCell>{id}</TableCell>
+      <TableCell><img src={image} alt="profile" /></TableCell>
+      <TableCell>{name}</TableCell>
+      <TableCell>{birthday}</TableCell>
+      <TableCell>{gender}</TableCell>
+      <TableCell>{job}</TableCell>
+    </TableRow>
+  );
 }
 
 export default Customer;

@@ -1,3 +1,10 @@
-.gray-background {
-  background: darkgray;
+/* App.css */
+.root {
+  width: 100%;
+  margin-top: 16px; /* 또는 theme.spacing(3)으로 변경해도 좋습니다 */
+  overflow-x: auto;
+}
+
+.table {
+  min-width: 1080px;
 }
