@@ -7,13 +7,17 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Customer from "./components/Customer";
 import Paper from "@mui/material/Paper";
+import Stack from "@mui/material/Stack";
+import CircularProgress from "@mui/material/CircularProgress";
 
 function App() {
   const [customers, setCustomers] = useState([]);
+  const [progress, setProgress] = React.useState(0);
 
   useEffect(() => {
-    callApi().then((res) => setCustomers(res)).catch(err => console.log(err));
-    
+    callApi()
+      .then((res) => setCustomers(res))
+      .catch((err) => console.log(err));
   }, []);
 
   const callApi = async () => {
@@ -21,6 +25,18 @@ function App() {
     const body = await response.json();
     return body;
   };
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setProgress((prevProgress) =>
+        prevProgress >= 100 ? 0 : prevProgress + 10
+      );
+    }, 800);
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, []);
 
   return (
     <Paper className="root">
@@ -36,17 +52,25 @@ function App() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {customers ? customers.map((c) => (
-            <Customer
-              key={c.id}
-              id={c.id}
-              image={c.image}
-              name={c.name}
-              birthday={c.birthday}
-              gender={c.gender}
-              job={c.job}
-            />
-          )) : ""}
+          {customers.length !== 0 ? (
+            customers.map((c) => (
+              <Customer
+                key={c.id}
+                id={c.id}
+                image={c.image}
+                name={c.name}
+                birthday={c.birthday}
+                gender={c.gender}
+                job={c.job}
+              />
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan="6" align="center">
+                <CircularProgress className="progress" variant="determinate" value={progress} />
+              </TableCell>
+            </TableRow>
+          )}
         </TableBody>
       </Table>
     </Paper>

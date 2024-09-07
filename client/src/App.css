@@ -8,3 +8,7 @@
 .table {
   min-width: 1080px;
 }
+
+.progress {
+  margin-top: 8px;
+}
