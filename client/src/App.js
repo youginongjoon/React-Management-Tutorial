@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -8,34 +8,20 @@ import TableRow from "@mui/material/TableRow";
 import Customer from "./components/Customer";
 import Paper from "@mui/material/Paper";
 
-const customers = [
-  {
-    id: 1,
-    image: "https://picsum.photos/id/1/64/64",
-    name: "홍길동",
-    birthday: "990909",
-    gender: "여자",
-    job: "대학생",
-  },
-  {
-    id: 2,
-    image: "https://picsum.photos/id/2/64/64",
-    name: "김학수",
-    birthday: "971203",
-    gender: "남자",
-    job: "교사",
-  },
-  {
-    id: 3,
-    image: "https://picsum.photos/id/3/64/64",
-    name: "이순신",
-    birthday: "930921",
-    gender: "여자",
-    job: "군인",
-  },
-];
-
 function App() {
+  const [customers, setCustomers] = useState([]);
+
+  useEffect(() => {
+    callApi().then((res) => setCustomers(res)).catch(err => console.log(err));
+    
+  }, []);
+
+  const callApi = async () => {
+    const response = await fetch("/api/customers");
+    const body = await response.json();
+    return body;
+  };
+
   return (
     <Paper className="root">
       <Table className="table">
@@ -50,7 +36,7 @@ function App() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {customers.map((c) => (
+          {customers ? customers.map((c) => (
             <Customer
               key={c.id}
               id={c.id}
@@ -60,7 +46,7 @@ function App() {
               gender={c.gender}
               job={c.job}
             />
-          ))}
+          )) : ""}
         </TableBody>
       </Table>
     </Paper>
