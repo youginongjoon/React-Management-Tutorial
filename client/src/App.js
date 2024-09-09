@@ -7,7 +7,6 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Customer from "./components/Customer";
 import Paper from "@mui/material/Paper";
-import Stack from "@mui/material/Stack";
 import CircularProgress from "@mui/material/CircularProgress";
 
 function App() {
