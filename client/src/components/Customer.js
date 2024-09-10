@@ -1,8 +1,9 @@
 import React from "react";
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
+import CustomerDelete from "./CustomerDelete";
 
-function Customer({ id, image, name, birthday, gender, job }) {
+function Customer({ id, image, name, birthday, gender, job, stateRefresh}) {
   return (
     <TableRow>
       <TableCell>{id}</TableCell>
@@ -11,6 +12,7 @@ function Customer({ id, image, name, birthday, gender, job }) {
       <TableCell>{birthday}</TableCell>
       <TableCell>{gender}</TableCell>
       <TableCell>{job}</TableCell>
+      <TableCell><CustomerDelete id={id} stateRefresh={stateRefresh}/></TableCell>
     </TableRow>
   );
 }
