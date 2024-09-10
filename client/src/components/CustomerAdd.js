@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-export default function CustomerAdd() {
+export default function CustomerAdd( { stateRefresh }) {
   const [customerState, setCustomerState] = useState({
     file: null,
     userName: "",
@@ -10,6 +10,7 @@ export default function CustomerAdd() {
     job: "",
     fileName: "",
   });
+
 
   const handleFileChange = (event) => {
     setCustomerState((prevState) => ({
@@ -48,6 +49,7 @@ export default function CustomerAdd() {
     addCustomer()
       .then((response) => {
         console.log(response.data);
+        stateRefresh(); // 새로고침 
       });
       setCustomerState({
         file: null,
@@ -57,7 +59,7 @@ export default function CustomerAdd() {
         job: '',
         fileName: ''
       })
-      // window.location.reload();
+      
   };
 
   return (

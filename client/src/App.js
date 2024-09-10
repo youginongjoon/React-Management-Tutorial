@@ -12,7 +12,14 @@ import CircularProgress from "@mui/material/CircularProgress";
 
 function App() {
   const [customers, setCustomers] = useState([]);
-  const [progress, setProgress] = React.useState(0);
+  const [progress, setProgress] = useState(0);
+
+  const stateRefresh = () => {
+    setCustomers([]);
+    callApi()
+      .then((res) => setCustomers(res))
+      .catch((err) => console.log(err));
+  };
 
   useEffect(() => {
     callApi()
@@ -79,7 +86,7 @@ function App() {
           </TableBody>
         </Table>
       </Paper>
-      <CustomerAdd/>
+      <CustomerAdd stateRefresh={stateRefresh} />
     </>
   );
 }
