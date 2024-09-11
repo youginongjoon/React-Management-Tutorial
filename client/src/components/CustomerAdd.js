@@ -1,7 +1,13 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-export default function CustomerAdd( { stateRefresh }) {
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import { DialogActions, TextField } from "@mui/material";
+
+export default function CustomerAdd({ stateRefresh }) {
   const [customerState, setCustomerState] = useState({
     file: null,
     userName: "",
@@ -9,15 +15,36 @@ export default function CustomerAdd( { stateRefresh }) {
     gender: "",
     job: "",
     fileName: "",
+    open: false,
   });
 
-
-  const handleFileChange = (event) => {
+  const handleClickOpen = () => {
     setCustomerState((prevState) => ({
       ...prevState,
-      file: event.target.files[0],
-      fileName: event.target.value,
+      open: true,
     }));
+  };
+
+  const handleClose = () => {
+    setCustomerState({
+      file: null,
+      userName: "",
+      birthday: "",
+      gender: "",
+      job: "",
+      fileName: "",
+      open: false,
+    });
+  };
+
+  const handleFileChange = (event) => {
+    if (event.target.files.length > 0) {
+      setCustomerState((prevState) => ({
+        ...prevState,
+        file: event.target.files[0],
+        fileName: event.target.files[0].name, // Update fileName based on selected file
+      }));
+    }
   };
 
   const handleValueChange = (event) => {
@@ -38,7 +65,7 @@ export default function CustomerAdd( { stateRefresh }) {
 
     const config = {
       headers: {
-        "content-type": "multipart/form-data", // 전달하고자 하는 내용에 파일이 포함되어 있을 때 설정
+        "content-type": "multipart/form-data",
       },
     };
     return axios.post(url, formData, config);
@@ -46,67 +73,87 @@ export default function CustomerAdd( { stateRefresh }) {
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
-    addCustomer()
-      .then((response) => {
-        console.log(response.data);
-        stateRefresh(); // 새로고침 
-      });
-      setCustomerState({
-        file: null,
-        userName: '',
-        birthday: '',
-        gender: '',
-        job: '',
-        fileName: ''
-      })
-      
+    
+    // 필수 필드 유효성 검사
+    if (!customerState.file || !customerState.userName || !customerState.birthday || !customerState.gender || !customerState.job) {
+      alert("모든 필드를 채워주세요."); // 사용자에게 오류 메시지 표시
+      return; // 폼 제출을 중단합니다
+    }
+
+    addCustomer().then((response) => {
+      console.log(response.data);
+      stateRefresh(); // 새로고침
+    });
+    setCustomerState({
+      file: null,
+      userName: "",
+      birthday: "",
+      gender: "",
+      job: "",
+      fileName: "",
+      open: false,
+    });
   };
 
   return (
-    <form onSubmit={handleFormSubmit}>
-      <h1>고객추가</h1>
-      프로필 이미지:
-      <input
-        type="file"
-        name="file"
-        file={customerState.file}
-        value={customerState.fileName}
-        onChange={handleFileChange}
-      />
-      <br />
-      이름:
-      <input
-        type="text"
-        name="userName"
-        value={customerState.userName}
-        onChange={handleValueChange}
-      />
-      <br />
-      생년월일:
-      <input
-        type="text"
-        name="birthday"
-        value={customerState.birthday}
-        onChange={handleValueChange}
-      />
-      <br />
-      성별:
-      <input
-        type="text"
-        name="gender"
-        value={customerState.gender}
-        onChange={handleValueChange}
-      />
-      <br />
-      직업:
-      <input
-        type="text"
-        name="job"
-        value={customerState.job}
-        onChange={handleValueChange}
-      />
-      <br />
-      <button type="submit">추가하기</button>
-    </form>
+    <>
+      <Button variant="contained" color="primary" onClick={handleClickOpen}>
+        고객 추가하기
+      </Button>
+      <Dialog open={customerState.open} onClose={handleClose}>
+        <DialogTitle>고객 추가</DialogTitle>
+        <DialogContent>
+          <input
+            style={{ display: 'none' }}
+            accept="image/*"
+            id="raised-button-file"
+            type="file"
+            onChange={handleFileChange}
+          />
+          <label htmlFor="raised-button-file">
+            <Button variant="contained" color="primary" component="span"> 
+              {customerState.fileName === "" ? "프로필 이미지 선택" : customerState.fileName}
+            </Button>
+          </label>
+          <br />
+          <TextField
+            label="이름"
+            type="text"
+            name="userName"
+            value={customerState.userName}
+            onChange={handleValueChange}
+          />
+          <br />
+          <TextField
+            label="생년월일"
+            type="text"
+            name="birthday"
+            value={customerState.birthday}
+            onChange={handleValueChange}
+          />
+          <br />
+          <TextField
+            label="성별"
+            type="text"
+            name="gender"
+            value={customerState.gender}
+            onChange={handleValueChange}
+          />
+          <br />
+          <TextField
+            label="직업"
+            type="text"
+            name="job"
+            value={customerState.job}
+            onChange={handleValueChange}
+          />
+          <br />
+        </DialogContent>
+        <DialogActions>
+          <Button variant="contained" color="primary" onClick={handleFormSubmit}>추가</Button>
+          <Button variant="outlined" color="primary" onClick={handleClose}>닫기</Button>
+        </DialogActions>
+      </Dialog>
+    </>
   );
 }
