@@ -1,14 +1,25 @@
 /* App.css */
 .root {
   width: 100%;
-  margin-top: 16px; /* 또는 theme.spacing(3)으로 변경해도 좋습니다 */
-  overflow-x: auto;
+  min-width: 1080;
 }
 
-.table {
-  min-width: 1080px;
+.paper {
+  margin-left: 18;
+  margin-right: 18;
 }
 
 .progress {
   margin-top: 8px;
+}
+
+.tableHead {
+  font-size: 1.0rem;
+}
+
+.menu {
+  margin-top: 15px;
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: center;
 }
